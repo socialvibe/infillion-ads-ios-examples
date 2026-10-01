@@ -47,8 +47,9 @@ Every example follows the same flow:
 
 1. Add `TruexAdRenderer-iOS` and the player or ad SDK dependencies.
 2. Detect an Infillion ad from its ad system (`trueX` or `IDVx`, compared case-insensitively).
-3. Read `adParameters` from the ad: the JSON in `<Linear><AdParameters>`, which Google IMA exposes as
-   `traffickingParameters`. If it is missing or invalid, don't start the renderer and continue the pod.
+3. Read `adParameters` from the ad: the JSON in `<Linear><AdParameters>` (generic tag), which Google IMA exposes as
+   `traffickingParameters`, or a base64 JSON `truex` companion (companion tag, handled in Manual CSAI). If it is
+   missing or invalid, don't start the renderer and continue the pod.
 4. Pause playback and move past the placeholder media.
 5. Create the renderer with `initWithAdParameters:options:delegate:` and call `start(_:)` with a view above the
    player. Keep a strong reference to it.
@@ -97,8 +98,9 @@ Command-line build and test commands are in [CONTRIBUTING.md](CONTRIBUTING.md).
 Sample URLs and DAI identifiers are deliberately visible near the top of each example. Replace them with
 publisher-owned configuration in a real integration.
 
-- iOS TrueX tag `get.truex.com/22c36d3926383ba62994809a60b4649e3ced1070/vast/generic` and iOS IDVx tag
-  `get.truex.com/132f66121635ac312e42f1eb018081d50d10fe2a/vast/idvx/generic`.
+- iOS TrueX placement `22c36d3926383ba62994809a60b4649e3ced1070` and iOS IDVx placement
+  `132f66121635ac312e42f1eb018081d50d10fe2a` on `get.truex.com`, as generic tags (`/vast/generic`,
+  `/vast/idvx/generic`) and, for TrueX in Manual CSAI, as a companion tag (`/vast/companion`).
 - Test IP parameter (`&ip=158.106.195.210`): Infillion's NYC office IP address is included on the sample tags so
   ads are filled during development and on CI. The TrueX ad server currently serves ads in the US and Canada
   only. Replace it with publisher-managed geo/IP handling in production.

@@ -6,7 +6,7 @@
       "id": "truex-interactive",
       "adSystem": "trueX",
       "mediaUrl": "https://media.truex.com/m/video/truexloadingplaceholder-30s.mp4",
-      "vastUrl": "https://get.truex.com/22c36d3926383ba62994809a60b4649e3ced1070/vast/generic?stream_position=midroll&network_user_id=${user-id}&ip=158.106.195.210",
+      "vastUrl": "https://get.truex.com/22c36d3926383ba62994809a60b4649e3ced1070/vast/companion?stream_position=midroll&network_user_id=${user-id}&ip=158.106.195.210",
       "durationSeconds": 30
     },
     {

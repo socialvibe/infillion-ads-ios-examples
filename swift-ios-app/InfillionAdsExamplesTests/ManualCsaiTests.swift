@@ -61,4 +61,57 @@ final class ManualCsaiTests: XCTestCase {
             "<VAST><Ad><InLine><Creatives><Creative><Linear><AdParameters>not json</AdParameters></Linear></Creative></Creatives></InLine></Ad></VAST>"
         XCTAssertNil(ManualVastPayload.parse(vast: Data(vast.utf8)))
     }
+
+    // `{"user_id":"u1","vast_config_url":"get.truex.com/abc/vast/config"}`, wrapped like the ad server does.
+    private static let companionDataUrl = """
+        data:application/json;base64,eyJ1c2VyX2lkIjoidTEiLCJ2YXN0X2NvbmZpZ191cmwiOiJnZXQudHJ1ZXguY29tL2Fi
+        Yy92YXN0L2NvbmZpZyJ9
+        """
+
+    private static func companionVast(apiFramework: String = "truex", resource: String, adParameters: String? = nil)
+        -> Data
+    {
+        let linear = adParameters.map { "<AdParameters><![CDATA[\($0)]]></AdParameters>" } ?? ""
+        let vast = """
+            <VAST version="4.0"><Ad id="super_tag"><InLine><AdSystem>trueX</AdSystem><Creatives>
+            <Creative id="super_tag"><CompanionAds required="all">
+            <Companion id="super_tag" width="960" height="540" apiFramework="\(apiFramework)">
+            <StaticResource creativeType="application/json"><![CDATA[ \(resource) ]]></StaticResource>
+            </Companion></CompanionAds></Creative>
+            <Creative id="placeholder_video"><Linear><Duration>00:00:30</Duration>\(linear)</Linear></Creative>
+            </Creatives></InLine></Ad></VAST>
+            """
+        return Data(vast.utf8)
+    }
+
+    func testParsesAdParametersFromTruexCompanion() throws {
+        let adParameters = try XCTUnwrap(
+            ManualVastPayload.parse(vast: Self.companionVast(resource: Self.companionDataUrl))
+        )
+        XCTAssertEqual(adParameters["user_id"] as? String, "u1")
+        XCTAssertEqual(adParameters["vast_config_url"] as? String, "get.truex.com/abc/vast/config")
+    }
+
+    func testCompanionWinsOverAdParameters() throws {
+        let vast = Self.companionVast(resource: Self.companionDataUrl, adParameters: #"{"user_id":"linear"}"#)
+        XCTAssertEqual(ManualVastPayload.parse(vast: vast)?["user_id"] as? String, "u1")
+    }
+
+    func testFallsBackToAdParametersWhenCompanionIsInvalid() throws {
+        let vast = Self.companionVast(
+            resource: "data:application/json;base64,!!!",
+            adParameters: #"{"user_id":"linear"}"#
+        )
+        XCTAssertEqual(ManualVastPayload.parse(vast: vast)?["user_id"] as? String, "linear")
+    }
+
+    func testIgnoresNonTruexCompanion() {
+        XCTAssertNil(
+            ManualVastPayload.parse(vast: Self.companionVast(apiFramework: "VPAID", resource: Self.companionDataUrl))
+        )
+    }
+
+    func testReadsPlainJsonCompanionResource() {
+        XCTAssertEqual(ManualVastPayload.companionAdParameters(#"{"user_id":"plain"}"#)?["user_id"] as? String, "plain")
+    }
 }
