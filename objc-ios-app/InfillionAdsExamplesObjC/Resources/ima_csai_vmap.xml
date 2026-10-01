@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sample VMAP for the Google IMA CSAI example: a preroll and a midroll, each with TrueX, IDVx, and a linear ad. -->
+<vmap:VMAP xmlns:vmap="http://www.iab.net/videosuite/vmap" version="1.0">
+  <vmap:AdBreak timeOffset="start" breakType="linear" breakId="preroll">
+    <vmap:AdSource id="preroll-ads" allowMultipleAds="true" followRedirects="true">
+      <vmap:VASTAdData>
+        <VAST version="3.0">
+          <Ad id="truex-preroll" sequence="1">
+            <Wrapper>
+              <AdSystem>trueX</AdSystem>
+              <VASTAdTagURI><![CDATA[https://get.truex.com/22c36d3926383ba62994809a60b4649e3ced1070/vast/generic?stream_position=preroll&ip=158.106.195.210]]></VASTAdTagURI>
+            </Wrapper>
+          </Ad>
+          <Ad id="idvx-preroll" sequence="2">
+            <Wrapper>
+              <AdSystem>IDVx</AdSystem>
+              <VASTAdTagURI><![CDATA[https://get.truex.com/132f66121635ac312e42f1eb018081d50d10fe2a/vast/idvx/generic?stream_position=preroll&ip=158.106.195.210]]></VASTAdTagURI>
+            </Wrapper>
+          </Ad>
+          <Ad id="coffee-preroll" sequence="3">
+            <InLine>
+              <AdSystem>GDFP</AdSystem>
+              <AdTitle>Coffee Preroll</AdTitle>
+              <Creatives>
+                <Creative id="coffee-preroll" sequence="1">
+                  <Linear>
+                    <Duration>00:00:30</Duration>
+                    <MediaFiles>
+                      <MediaFile delivery="progressive" width="1280" height="720" type="video/mp4" scalable="true" maintainAspectRatio="true">
+                        <![CDATA[https://ctv.truex.com/assets/coffee-720p.mp4]]></MediaFile>
+                    </MediaFiles>
+                  </Linear>
+                </Creative>
+              </Creatives>
+            </InLine>
+          </Ad>
+        </VAST>
+      </vmap:VASTAdData>
+    </vmap:AdSource>
+  </vmap:AdBreak>
+  <vmap:AdBreak timeOffset="00:01:00.000" breakType="linear" breakId="midroll-1">
+    <vmap:AdSource id="midroll-1-ads" allowMultipleAds="true" followRedirects="true">
+      <vmap:VASTAdData>
+        <VAST version="3.0">
+          <Ad id="truex-midroll" sequence="1">
+            <Wrapper>
+              <AdSystem>trueX</AdSystem>
+              <VASTAdTagURI><![CDATA[https://get.truex.com/22c36d3926383ba62994809a60b4649e3ced1070/vast/generic?stream_position=midroll&ip=158.106.195.210]]></VASTAdTagURI>
+            </Wrapper>
+          </Ad>
+          <Ad id="idvx-midroll" sequence="2">
+            <Wrapper>
+              <AdSystem>IDVx</AdSystem>
+              <VASTAdTagURI><![CDATA[https://get.truex.com/132f66121635ac312e42f1eb018081d50d10fe2a/vast/idvx/generic?stream_position=midroll&ip=158.106.195.210]]></VASTAdTagURI>
+            </Wrapper>
+          </Ad>
+          <Ad id="petcare-midroll" sequence="3">
+            <InLine>
+              <AdSystem>GDFP</AdSystem>
+              <AdTitle>Petcare Midroll</AdTitle>
+              <Creatives>
+                <Creative id="petcare-midroll" sequence="1">
+                  <Linear>
+                    <Duration>00:00:30</Duration>
+                    <MediaFiles>
+                      <MediaFile delivery="progressive" width="1280" height="720" type="video/mp4" scalable="true" maintainAspectRatio="true">
+                        <![CDATA[https://ctv.truex.com/assets/petcare-720p.mp4]]></MediaFile>
+                    </MediaFiles>
+                  </Linear>
+                </Creative>
+              </Creatives>
+            </InLine>
+          </Ad>
+        </VAST>
+      </vmap:VASTAdData>
+    </vmap:AdSource>
+  </vmap:AdBreak>
+</vmap:VMAP>
