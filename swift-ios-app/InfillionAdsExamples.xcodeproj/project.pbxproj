@@ -1,0 +1,422 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1A0000000000000000000001 /* GoogleInteractiveMediaAds in Frameworks */ = {isa = PBXBuildFile; productRef = 1A0000000000000000000041 /* GoogleInteractiveMediaAds */; };
+		1A0000000000000000000002 /* TruexAdRenderer-iOS in Frameworks */ = {isa = PBXBuildFile; productRef = 1A0000000000000000000042 /* TruexAdRenderer-iOS */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1A0000000000000000000051 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1A0000000000000000000030 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1A0000000000000000000020;
+			remoteInfo = InfillionAdsExamples;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1A0000000000000000000003 /* InfillionAdsExamples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InfillionAdsExamples.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A0000000000000000000004 /* InfillionAdsExamplesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InfillionAdsExamplesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A0000000000000000000005 /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Version.xcconfig; path = ../Version.xcconfig; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		1A0000000000000000000061 /* Exceptions for "InfillionAdsExamples" folder in "InfillionAdsExamples" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1A0000000000000000000020 /* InfillionAdsExamples */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		1A0000000000000000000010 /* InfillionAdsExamples */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1A0000000000000000000061 /* Exceptions for "InfillionAdsExamples" folder in "InfillionAdsExamples" target */,
+			);
+			path = InfillionAdsExamples;
+			sourceTree = "<group>";
+		};
+		1A0000000000000000000011 /* InfillionAdsExamplesTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = InfillionAdsExamplesTests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1A0000000000000000000022 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A0000000000000000000001 /* GoogleInteractiveMediaAds in Frameworks */,
+				1A0000000000000000000002 /* TruexAdRenderer-iOS in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1A0000000000000000000026 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1A0000000000000000000012 = {
+			isa = PBXGroup;
+			children = (
+				1A0000000000000000000005 /* Version.xcconfig */,
+				1A0000000000000000000010 /* InfillionAdsExamples */,
+				1A0000000000000000000011 /* InfillionAdsExamplesTests */,
+				1A0000000000000000000013 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1A0000000000000000000013 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1A0000000000000000000003 /* InfillionAdsExamples.app */,
+				1A0000000000000000000004 /* InfillionAdsExamplesTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1A0000000000000000000020 /* InfillionAdsExamples */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A0000000000000000000072 /* Build configuration list for PBXNativeTarget "InfillionAdsExamples" */;
+			buildPhases = (
+				1A0000000000000000000021 /* Sources */,
+				1A0000000000000000000022 /* Frameworks */,
+				1A0000000000000000000023 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				1A0000000000000000000010 /* InfillionAdsExamples */,
+			);
+			name = InfillionAdsExamples;
+			packageProductDependencies = (
+				1A0000000000000000000041 /* GoogleInteractiveMediaAds */,
+				1A0000000000000000000042 /* TruexAdRenderer-iOS */,
+			);
+			productName = InfillionAdsExamples;
+			productReference = 1A0000000000000000000003 /* InfillionAdsExamples.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1A0000000000000000000024 /* InfillionAdsExamplesTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A0000000000000000000073 /* Build configuration list for PBXNativeTarget "InfillionAdsExamplesTests" */;
+			buildPhases = (
+				1A0000000000000000000025 /* Sources */,
+				1A0000000000000000000026 /* Frameworks */,
+				1A0000000000000000000027 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1A0000000000000000000052 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1A0000000000000000000011 /* InfillionAdsExamplesTests */,
+			);
+			name = InfillionAdsExamplesTests;
+			productName = InfillionAdsExamplesTests;
+			productReference = 1A0000000000000000000004 /* InfillionAdsExamplesTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1A0000000000000000000030 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					1A0000000000000000000020 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					1A0000000000000000000024 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 1A0000000000000000000020;
+					};
+				};
+			};
+			buildConfigurationList = 1A0000000000000000000071 /* Build configuration list for PBXProject "InfillionAdsExamples" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1A0000000000000000000012;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1A0000000000000000000031 /* XCRemoteSwiftPackageReference "swift-package-manager-google-interactive-media-ads-ios" */,
+				1A0000000000000000000032 /* XCRemoteSwiftPackageReference "TruexAdRenderer-iOS-Swift-Package" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 1A0000000000000000000013 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1A0000000000000000000020 /* InfillionAdsExamples */,
+				1A0000000000000000000024 /* InfillionAdsExamplesTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1A0000000000000000000023 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1A0000000000000000000027 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1A0000000000000000000021 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1A0000000000000000000025 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1A0000000000000000000052 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1A0000000000000000000020 /* InfillionAdsExamples */;
+			targetProxy = 1A0000000000000000000051 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1A0000000000000000000081 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1A0000000000000000000005 /* Version.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		1A0000000000000000000082 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1A0000000000000000000005 /* Version.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		1A0000000000000000000083 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = InfillionAdsExamples/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Infillion Ads";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.infillion.ads.ios.examples;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "InfillionAdsExamples/Renderer/InfillionAdsExamples-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1A0000000000000000000084 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = InfillionAdsExamples/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Infillion Ads";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.infillion.ads.ios.examples;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "InfillionAdsExamples/Renderer/InfillionAdsExamples-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1A0000000000000000000085 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.infillion.ads.ios.examples.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/InfillionAdsExamples.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/InfillionAdsExamples";
+			};
+			name = Debug;
+		};
+		1A0000000000000000000086 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.infillion.ads.ios.examples.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/InfillionAdsExamples.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/InfillionAdsExamples";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1A0000000000000000000071 /* Build configuration list for PBXProject "InfillionAdsExamples" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A0000000000000000000081 /* Debug */,
+				1A0000000000000000000082 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A0000000000000000000072 /* Build configuration list for PBXNativeTarget "InfillionAdsExamples" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A0000000000000000000083 /* Debug */,
+				1A0000000000000000000084 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A0000000000000000000073 /* Build configuration list for PBXNativeTarget "InfillionAdsExamplesTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A0000000000000000000085 /* Debug */,
+				1A0000000000000000000086 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1A0000000000000000000031 /* XCRemoteSwiftPackageReference "swift-package-manager-google-interactive-media-ads-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-interactive-media-ads-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.28.10;
+			};
+		};
+		1A0000000000000000000032 /* XCRemoteSwiftPackageReference "TruexAdRenderer-iOS-Swift-Package" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socialvibe/TruexAdRenderer-iOS-Swift-Package";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1A0000000000000000000041 /* GoogleInteractiveMediaAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A0000000000000000000031 /* XCRemoteSwiftPackageReference "swift-package-manager-google-interactive-media-ads-ios" */;
+			productName = GoogleInteractiveMediaAds;
+		};
+		1A0000000000000000000042 /* TruexAdRenderer-iOS */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A0000000000000000000032 /* XCRemoteSwiftPackageReference "TruexAdRenderer-iOS-Swift-Package" */;
+			productName = "TruexAdRenderer-iOS";
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 1A0000000000000000000030 /* Project object */;
+}

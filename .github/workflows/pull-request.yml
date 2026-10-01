@@ -80,6 +80,9 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7
 
+      - name: Lint Swift code
+        run: xcrun swift-format lint --strict --recursive swift-ios-app
+
       - name: Run unit tests
         run: |
           set -euo pipefail
