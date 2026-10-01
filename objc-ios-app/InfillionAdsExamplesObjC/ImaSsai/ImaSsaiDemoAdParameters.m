@@ -55,7 +55,9 @@ static NSString *const kIdvxTag =
         tag = kIdvxTag;
     }
     if (!tag) {
-        completion(nil);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(nil);
+        });
         return nil;
     }
     NSURLSessionDataTask *task =
