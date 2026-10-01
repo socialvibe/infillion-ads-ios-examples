@@ -40,7 +40,8 @@ func shouldDiscardImaCsaiAdBreak(_ type: ImaCsaiAdType, earnedCredit: Bool) -> B
 /// Returns nil when it is missing or not a JSON object.
 func imaCsaiAdParameters(traffickingParameters: String?) -> [String: Any]? {
     guard let json = traffickingParameters?.trimmingCharacters(in: .whitespacesAndNewlines).data(using: .utf8),
-          !json.isEmpty else {
+        !json.isEmpty
+    else {
         return nil
     }
     return (try? JSONSerialization.jsonObject(with: json)) as? [String: Any]

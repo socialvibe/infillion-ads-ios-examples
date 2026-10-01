@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import InfillionAdsExamples
 
 final class ManualCsaiTests: XCTestCase {
@@ -41,11 +42,11 @@ final class ManualCsaiTests: XCTestCase {
 
     func testParsesAdParametersFromLinear() throws {
         let vast = """
-        <VAST version="4.0"><Ad id="super_tag"><InLine><AdSystem>trueX</AdSystem><Creatives><Creative>
-        <Linear><Duration>00:00:30</Duration>
-        <AdParameters><![CDATA[{"user_id":"u1","vast_config_url":"get.truex.com/abc/vast/config"}]]></AdParameters>
-        </Linear></Creative></Creatives></InLine></Ad></VAST>
-        """
+            <VAST version="4.0"><Ad id="super_tag"><InLine><AdSystem>trueX</AdSystem><Creatives><Creative>
+            <Linear><Duration>00:00:30</Duration>
+            <AdParameters><![CDATA[{"user_id":"u1","vast_config_url":"get.truex.com/abc/vast/config"}]]></AdParameters>
+            </Linear></Creative></Creatives></InLine></Ad></VAST>
+            """
         let adParameters = try XCTUnwrap(ManualVastPayload.parse(vast: Data(vast.utf8)))
         XCTAssertEqual(adParameters["user_id"] as? String, "u1")
         XCTAssertEqual(adParameters["vast_config_url"] as? String, "get.truex.com/abc/vast/config")
@@ -56,7 +57,8 @@ final class ManualCsaiTests: XCTestCase {
     }
 
     func testInvalidAdParametersJsonIsRejected() {
-        let vast = "<VAST><Ad><InLine><Creatives><Creative><Linear><AdParameters>not json</AdParameters></Linear></Creative></Creatives></InLine></Ad></VAST>"
+        let vast =
+            "<VAST><Ad><InLine><Creatives><Creative><Linear><AdParameters>not json</AdParameters></Linear></Creative></Creatives></InLine></Ad></VAST>"
         XCTAssertNil(ManualVastPayload.parse(vast: Data(vast.utf8)))
     }
 }

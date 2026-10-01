@@ -13,21 +13,24 @@ final class HomeViewController: UIViewController {
     private let examples: [Example] = [
         Example(
             title: "Plain / Manual CSAI",
-            description: "Own the ad break yourself: pause content, run the interactive renderer, then skip or continue the pod.",
+            description:
+                "Own the ad break yourself: pause content, run the interactive renderer, then skip or continue the pod.",
             delivery: "Simulated request",
             insertion: "Client-side",
             makeViewController: { ManualCsaiViewController() }
         ),
         Example(
             title: "Google IMA CSAI",
-            description: "Let Google IMA request and sequence client-side ads while the app handles TrueX and IDVx placeholders.",
+            description:
+                "Let Google IMA request and sequence client-side ads while the app handles TrueX and IDVx placeholders.",
             delivery: "Google IMA",
             insertion: "Client-side",
             makeViewController: { ImaCsaiViewController() }
         ),
         Example(
             title: "Google IMA SSAI",
-            description: "Play a Google DAI stream, coordinate stitched ad timing, and seek the stream when TrueX credit is earned.",
+            description:
+                "Play a Google DAI stream, coordinate stitched ad timing, and seek the stream when TrueX credit is earned.",
             delivery: "Google DAI",
             insertion: "Server-side",
             makeViewController: { ImaSsaiViewController() }
@@ -49,7 +52,11 @@ final class HomeViewController: UIViewController {
         logo.heightAnchor.constraint(equalToConstant: 36).isActive = true
         navigationItem.titleView = logo
 
-        let heading = makeLabel("Interactive ads examples", font: Theme.font(.bold, size: 28, textStyle: .largeTitle), color: Theme.fogGray)
+        let heading = makeLabel(
+            "Interactive ads examples",
+            font: Theme.font(.bold, size: 28, textStyle: .largeTitle),
+            color: Theme.fogGray
+        )
         let intro = makeLabel(
             "TrueX and IDVx ads rendered by TruexAdRenderer-iOS. Each example is self-contained: pick one and read it top to bottom.",
             font: Theme.font(.regular, size: 15, textStyle: .body),
@@ -98,8 +105,16 @@ final class HomeViewController: UIViewController {
     }
 
     private func makeCard(for example: Example, tag: Int) -> UIView {
-        let title = makeLabel(example.title, font: Theme.font(.bold, size: 20, textStyle: .title3), color: Theme.fogGray)
-        let description = makeLabel(example.description, font: Theme.font(.regular, size: 15, textStyle: .body), color: Theme.mutedFog)
+        let title = makeLabel(
+            example.title,
+            font: Theme.font(.bold, size: 20, textStyle: .title3),
+            color: Theme.fogGray
+        )
+        let description = makeLabel(
+            example.description,
+            font: Theme.font(.regular, size: 15, textStyle: .body),
+            color: Theme.mutedFog
+        )
         let chips = UIStackView(arrangedSubviews: [makeChip(example.delivery), makeChip(example.insertion), UIView()])
         chips.spacing = 8
 

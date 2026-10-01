@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import InfillionAdsExamples
 
 final class ImaSsaiTests: XCTestCase {

@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import InfillionAdsExamples
 
 final class ImaCsaiTests: XCTestCase {
@@ -23,7 +24,11 @@ final class ImaCsaiTests: XCTestCase {
     }
 
     func testParsesTraffickingParameters() throws {
-        let adParameters = try XCTUnwrap(imaCsaiAdParameters(traffickingParameters: #" {"user_id":"u1","vast_config_url":"get.truex.com/abc/vast/config"} "#))
+        let adParameters = try XCTUnwrap(
+            imaCsaiAdParameters(
+                traffickingParameters: #" {"user_id":"u1","vast_config_url":"get.truex.com/abc/vast/config"} "#
+            )
+        )
         XCTAssertEqual(adParameters["user_id"] as? String, "u1")
     }
 

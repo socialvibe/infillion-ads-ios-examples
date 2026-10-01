@@ -51,10 +51,18 @@ final class ManualCsaiViewController: UIViewController {
         playerViewController.didMove(toParent: self)
         statusView.install(in: self)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActive),
-                                               name: UIApplication.willResignActiveNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive),
-                                               name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appWillResignActive),
+            name: UIApplication.willResignActiveNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appDidBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
 
         do {
             adBreak = try ManualAdBreak.loadFromBundle()
@@ -85,11 +93,14 @@ final class ManualCsaiViewController: UIViewController {
         statusView.text = "Content"
 
         // A periodic check, unlike a boundary observer, also catches a seek past the break offset.
-        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.5, preferredTimescale: 600),
-                                                      queue: .main) { [weak self] time in
+        timeObserver = player.addPeriodicTimeObserver(
+            forInterval: CMTime(seconds: 0.5, preferredTimescale: 600),
+            queue: .main
+        ) { [weak self] time in
             guard let self, let adBreak = self.adBreak, !self.adBreakStarted,
-                  self.player.currentItem === self.contentItem,
-                  time.seconds >= adBreak.timeOffsetSeconds else {
+                self.player.currentItem === self.contentItem,
+                time.seconds >= adBreak.timeOffsetSeconds
+            else {
                 return
             }
             self.startAdBreak(adBreak)
@@ -148,13 +159,15 @@ final class ManualCsaiViewController: UIViewController {
         let item = AVPlayerItem(url: ad.mediaUrl)
         removeAdEndObservers()
         for name in [AVPlayerItem.didPlayToEndTimeNotification, AVPlayerItem.failedToPlayToEndTimeNotification] {
-            adEndObservers.append(NotificationCenter.default.addObserver(forName: name, object: item, queue: .main) { [weak self] _ in
-                guard let self else {
-                    return
+            adEndObservers.append(
+                NotificationCenter.default.addObserver(forName: name, object: item, queue: .main) { [weak self] _ in
+                    guard let self else {
+                        return
+                    }
+                    self.removeAdEndObservers()
+                    self.playAd(at: self.currentAdIndex + 1)
                 }
-                self.removeAdEndObservers()
-                self.playAd(at: self.currentAdIndex + 1)
-            })
+            )
         }
         player.replaceCurrentItem(with: item)
         player.play()
@@ -228,7 +241,9 @@ extension ManualCsaiViewController: TruexAdRendererDelegate {
 
     func onAdCompleted(_ timeSpent: Int) {
         exampleLog("onAdCompleted timeSpent=\(timeSpent)")
-        finishInteractiveAd(skipRemainingAds: shouldSkipRemainingPod(currentInteractiveType, earnedCredit: truexAdCreditReceived))
+        finishInteractiveAd(
+            skipRemainingAds: shouldSkipRemainingPod(currentInteractiveType, earnedCredit: truexAdCreditReceived)
+        )
     }
 
     func onAdError(_ errorMessage: String!) {

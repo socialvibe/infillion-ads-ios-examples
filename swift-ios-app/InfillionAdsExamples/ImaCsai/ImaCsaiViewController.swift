@@ -64,10 +64,18 @@ final class ImaCsaiViewController: UIViewController {
         view.addSubview(adContainerView)
         statusView.install(in: self)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActive),
-                                               name: UIApplication.willResignActiveNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive),
-                                               name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appWillResignActive),
+            name: UIApplication.willResignActiveNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appDidBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
 
         contentPlayer.replaceCurrentItem(with: AVPlayerItem(url: Self.contentUrl))
         adsLoader.delegate = self
@@ -96,16 +104,21 @@ final class ImaCsaiViewController: UIViewController {
 
     private func requestAds() {
         guard let url = Bundle.main.url(forResource: Self.vmapResource, withExtension: "xml"),
-              let vmap = try? String(contentsOf: url, encoding: .utf8) else {
+            let vmap = try? String(contentsOf: url, encoding: .utf8)
+        else {
             statusView.text = "Error: can't load \(Self.vmapResource).xml, playing content"
             contentPlayer.play()
             return
         }
         statusView.text = "Requesting ads"
         let displayContainer = IMAAdDisplayContainer(adContainer: adContainerView, viewController: self)
-        let request = IMAAdsRequest(adsResponse: vmap, adDisplayContainer: displayContainer,
-                                    avPlayerVideoDisplay: videoDisplay, pictureInPictureProxy: pictureInPictureProxy,
-                                    userContext: nil)
+        let request = IMAAdsRequest(
+            adsResponse: vmap,
+            adDisplayContainer: displayContainer,
+            avPlayerVideoDisplay: videoDisplay,
+            pictureInPictureProxy: pictureInPictureProxy,
+            userContext: nil
+        )
         adsLoader.requestAds(with: request)
     }
 
@@ -237,7 +250,9 @@ extension ImaCsaiViewController: TruexAdRendererDelegate {
 
     func onAdCompleted(_ timeSpent: Int) {
         exampleLog("onAdCompleted timeSpent=\(timeSpent)")
-        finishInteractiveAd(skipRemainingAds: shouldDiscardImaCsaiAdBreak(currentInteractiveType, earnedCredit: truexAdCreditReceived))
+        finishInteractiveAd(
+            skipRemainingAds: shouldDiscardImaCsaiAdBreak(currentInteractiveType, earnedCredit: truexAdCreditReceived)
+        )
     }
 
     func onAdError(_ errorMessage: String!) {

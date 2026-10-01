@@ -19,7 +19,8 @@ enum ManualVastPayload {
         parser.delegate = delegate
         parser.parse()
         guard let text = delegate.adParameters?.trimmingCharacters(in: .whitespacesAndNewlines),
-              let json = text.data(using: .utf8) else {
+            let json = text.data(using: .utf8)
+        else {
             return nil
         }
         return (try? JSONSerialization.jsonObject(with: json)) as? [String: Any]
@@ -31,8 +32,13 @@ private final class AdParametersParser: NSObject, XMLParserDelegate {
     private var inLinear = false
     private var buffer: String?
 
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
-                qualifiedName: String?, attributes: [String: String] = [:]) {
+    func parser(
+        _ parser: XMLParser,
+        didStartElement elementName: String,
+        namespaceURI: String?,
+        qualifiedName: String?,
+        attributes: [String: String] = [:]
+    ) {
         if elementName == "Linear" {
             inLinear = true
         } else if inLinear && elementName == "AdParameters" && adParameters == nil {
@@ -44,8 +50,8 @@ private final class AdParametersParser: NSObject, XMLParserDelegate {
         buffer?.append(string)
     }
 
-    func parser(_ parser: XMLParser, foundCDATA CDATABlock: Data) {
-        buffer?.append(String(decoding: CDATABlock, as: UTF8.self))
+    func parser(_ parser: XMLParser, foundCDATA cdataBlock: Data) {
+        buffer?.append(String(decoding: cdataBlock, as: UTF8.self))
     }
 
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName: String?) {

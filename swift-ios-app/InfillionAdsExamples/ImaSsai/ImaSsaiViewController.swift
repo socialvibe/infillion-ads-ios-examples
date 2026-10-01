@@ -60,10 +60,18 @@ final class ImaSsaiViewController: UIViewController {
         view.addSubview(adContainerView)
         statusView.install(in: self)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActive),
-                                               name: UIApplication.willResignActiveNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive),
-                                               name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appWillResignActive),
+            name: UIApplication.willResignActiveNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appDidBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
         adsLoader.delegate = self
     }
 
@@ -94,9 +102,13 @@ final class ImaSsaiViewController: UIViewController {
     private func requestStream() {
         statusView.text = "Requesting DAI stream"
         let displayContainer = IMAAdDisplayContainer(adContainer: adContainerView, viewController: self)
-        let request = IMAVODStreamRequest(contentSourceID: Self.contentSourceId, videoID: Self.videoId,
-                                          adDisplayContainer: displayContainer, videoDisplay: videoDisplay,
-                                          userContext: nil)
+        let request = IMAVODStreamRequest(
+            contentSourceID: Self.contentSourceId,
+            videoID: Self.videoId,
+            adDisplayContainer: displayContainer,
+            videoDisplay: videoDisplay,
+            userContext: nil
+        )
         adsLoader.requestStream(with: request)
     }
 
@@ -105,15 +117,20 @@ final class ImaSsaiViewController: UIViewController {
     }
 
     private func seekStream(to seconds: Double) {
-        player.seek(to: CMTime(seconds: seconds, preferredTimescale: 600), toleranceBefore: .zero, toleranceAfter: .zero)
+        player.seek(
+            to: CMTime(seconds: seconds, preferredTimescale: 600),
+            toleranceBefore: .zero,
+            toleranceAfter: .zero
+        )
     }
 
     /// The stitched stream can't be discarded, so a break that was already played is seeked over.
     private func skipPlayedAdBreak(at streamTime: Double) {
         guard !isPlayingAdBreak, truexAdRenderer == nil,
-              let cuepoint = (streamManager?.cuepoints as? [IMACuepoint])?.first(where: {
-                  $0.isPlayed && $0.startTime <= streamTime && streamTime < $0.endTime
-              }) else {
+            let cuepoint = (streamManager?.cuepoints as? [IMACuepoint])?.first(where: {
+                $0.isPlayed && $0.startTime <= streamTime && streamTime < $0.endTime
+            })
+        else {
             return
         }
         seekStream(to: imaSsaiAdBreakSkipTime(adBreakEndStreamTime: cuepoint.endTime))
@@ -153,9 +170,10 @@ final class ImaSsaiViewController: UIViewController {
         disposeRenderer()
         let streamTime = currentStreamTime
         if skipAdBreak,
-           let cuepoint = (streamManager?.cuepoints as? [IMACuepoint])?.first(where: {
-               $0.startTime <= streamTime && streamTime < $0.endTime
-           }) {
+            let cuepoint = (streamManager?.cuepoints as? [IMACuepoint])?.first(where: {
+                $0.startTime <= streamTime && streamTime < $0.endTime
+            })
+        {
             statusView.text = "TrueX credit earned: seeking past the ad break"
             seekStream(to: imaSsaiAdBreakSkipTime(adBreakEndStreamTime: cuepoint.endTime))
         } else {
@@ -193,8 +211,10 @@ extension ImaSsaiViewController: IMAAdsLoaderDelegate {
         streamManager = adsLoadedData.streamManager
         streamManager?.delegate = self
         streamManager?.initialize(with: nil)
-        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.5, preferredTimescale: 600),
-                                                      queue: .main) { [weak self] time in
+        timeObserver = player.addPeriodicTimeObserver(
+            forInterval: CMTime(seconds: 0.5, preferredTimescale: 600),
+            queue: .main
+        ) { [weak self] time in
             self?.skipPlayedAdBreak(at: CMTimeGetSeconds(time))
         }
     }
@@ -244,7 +264,9 @@ extension ImaSsaiViewController: TruexAdRendererDelegate {
 
     func onAdCompleted(_ timeSpent: Int) {
         exampleLog("onAdCompleted timeSpent=\(timeSpent)")
-        finishInteractiveAd(skipAdBreak: shouldSkipImaSsaiAdBreak(currentInteractiveType, earnedCredit: truexAdCreditReceived))
+        finishInteractiveAd(
+            skipAdBreak: shouldSkipImaSsaiAdBreak(currentInteractiveType, earnedCredit: truexAdCreditReceived)
+        )
     }
 
     func onAdError(_ errorMessage: String!) {

@@ -26,6 +26,19 @@ xcodebuild test \
   -destination 'platform=iOS Simulator,name=iPhone 17'
 ```
 
+## Code style
+
+Swift code follows `swift-format` (shipped with Xcode) with the repository's [.swift-format](.swift-format):
+4-space indentation, 120-character lines, and, when a call or declaration doesn't fit on one line, a break after
+`(` with one argument per line. Don't align continuation lines under the opening parenthesis.
+
+Format and lint before committing:
+
+```shell
+xcrun swift-format format --in-place --recursive swift-ios-app
+xcrun swift-format lint --strict --recursive swift-ios-app
+```
+
 ## Branch workflow
 
 While this repository has no remote and is being bootstrapped locally, direct work on `main` is allowed.
