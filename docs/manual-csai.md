@@ -6,7 +6,9 @@ contains.
 ## Copy
 
 Copy the `ManualCsai` folder, `Resources/manual_ad_break.json`, and `Renderer/TruexRendererFactory.{h,m}` with
-the bridging header. The folder does not depend on either IMA example.
+the bridging header. The folder does not depend on either IMA example. In the
+[Objective-C app](objc-app.md), copy the `ManualCsai` folder and `Resources/manual_ad_break.json`; it needs no
+factory.
 
 ## Flow
 
@@ -60,8 +62,8 @@ generic tag for IDVx, so one break exercises both formats.
 
 ## Renderer contract
 
-- The renderer is created by `TruexRendererFactory` with `supportsUserCancelStream` enabled and web view debugging
-  in debug builds only. `onUserCancelStream` closes the player screen.
+- The renderer is created with `supportsUserCancelStream` enabled and web view debugging in debug builds only
+  (through `TruexRendererFactory` in Swift, inline in Objective-C). `onUserCancelStream` closes the player screen.
 - The view controller keeps a strong reference to the renderer, because the renderer holds its delegate weakly.
 - While the renderer is active, the navigation bar, status bar, and home indicator are hidden.
 - `onPopupWebsite` pauses the renderer and opens `SFSafariViewController`; the renderer resumes when Safari closes.

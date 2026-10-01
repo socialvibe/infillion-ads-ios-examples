@@ -8,6 +8,10 @@
 
 ## Build and test
 
+The repository has two apps with the same examples: `swift-ios-app` (project `InfillionAdsExamples`) and
+`objc-ios-app` (project `InfillionAdsExamplesObjC`). A change to an example's behavior goes into both apps, with
+matching unit tests.
+
 Build the Swift app:
 
 ```shell
@@ -17,12 +21,28 @@ xcodebuild build \
   -destination 'generic/platform=iOS Simulator'
 ```
 
-Run all unit tests (use any available iPhone simulator):
+Build the Objective-C app:
+
+```shell
+xcodebuild build \
+  -project objc-ios-app/InfillionAdsExamplesObjC.xcodeproj \
+  -scheme InfillionAdsExamplesObjC \
+  -destination 'generic/platform=iOS Simulator'
+```
+
+Run the unit tests of each app (use any available iPhone simulator):
 
 ```shell
 xcodebuild test \
   -project swift-ios-app/InfillionAdsExamples.xcodeproj \
   -scheme InfillionAdsExamples \
+  -destination 'platform=iOS Simulator,name=iPhone 17'
+```
+
+```shell
+xcodebuild test \
+  -project objc-ios-app/InfillionAdsExamplesObjC.xcodeproj \
+  -scheme InfillionAdsExamplesObjC \
   -destination 'platform=iOS Simulator,name=iPhone 17'
 ```
 
@@ -37,6 +57,16 @@ Format and lint before committing:
 ```shell
 xcrun swift-format format --in-place --recursive swift-ios-app
 xcrun swift-format lint --strict --recursive swift-ios-app
+```
+
+Objective-C code follows the [Google Objective-C style guide](https://google.github.io/styleguide/objcguide.html)
+through `clang-format` (also shipped with Xcode) and the repository's [.clang-format](.clang-format): 4-space
+indentation, 120-character lines, and, when a message doesn't fit on one line, one selector part per line with the
+colons aligned. `if` / `for` / `while` bodies always use braces on their own lines.
+
+```shell
+find objc-ios-app swift-ios-app -name '*.[hm]' | xargs xcrun clang-format -i
+find objc-ios-app swift-ios-app -name '*.[hm]' | xargs xcrun clang-format --dry-run --Werror
 ```
 
 ## Branch workflow

@@ -1,0 +1,13 @@
+# Objective-C style: Google, with the repository's 4-space indentation and 120-character lines.
+BasedOnStyle: Google
+IndentWidth: 4
+ObjCBlockIndentWidth: 4
+ContinuationIndentWidth: 4
+ColumnLimit: 120
+AccessModifierOffset: -4
+AllowShortBlocksOnASingleLine: Never
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+IndentCaseLabels: true

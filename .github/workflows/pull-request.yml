@@ -83,18 +83,35 @@ jobs:
       - name: Lint Swift code
         run: xcrun swift-format lint --strict --recursive swift-ios-app
 
-      - name: Run unit tests
+      - name: Lint Objective-C code
+        run: find objc-ios-app swift-ios-app -name '*.[hm]' | xargs xcrun clang-format --dry-run --Werror
+
+      - name: Pick an iPhone simulator
         run: |
           set -euo pipefail
 
           simulator_id="$(xcrun simctl list devices available --json |
             python3 -c 'import json, sys; devices = json.load(sys.stdin)["devices"]; print(next(d["udid"] for runtime, items in devices.items() if "iOS" in runtime for d in items if d["name"].startswith("iPhone")))')"
+          echo "SIMULATOR_ID=${simulator_id}" >> "$GITHUB_ENV"
 
+      - name: Run Swift app unit tests
+        run: |
           xcodebuild test \
             -project swift-ios-app/InfillionAdsExamples.xcodeproj \
             -scheme InfillionAdsExamples \
-            -destination "id=${simulator_id}" \
-            -resultBundlePath build/UnitTests.xcresult \
+            -destination "id=${SIMULATOR_ID}" \
+            -resultBundlePath build/SwiftUnitTests.xcresult \
+            -skipMacroValidation \
+            -skipPackagePluginValidation
+
+      - name: Run Objective-C app unit tests
+        if: always()
+        run: |
+          xcodebuild test \
+            -project objc-ios-app/InfillionAdsExamplesObjC.xcodeproj \
+            -scheme InfillionAdsExamplesObjC \
+            -destination "id=${SIMULATOR_ID}" \
+            -resultBundlePath build/ObjCUnitTests.xcresult \
             -skipMacroValidation \
             -skipPackagePluginValidation
 
@@ -103,5 +120,5 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: unit-test-results
-          path: build/UnitTests.xcresult
+          path: build/*.xcresult
           if-no-files-found: warn

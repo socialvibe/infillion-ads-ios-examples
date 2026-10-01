@@ -1,7 +1,8 @@
 # Infillion Ads - iOS Examples
 
-An iOS reference app demonstrating three complete ways to add Infillion interactive ads (TrueX and IDVx) to an
-`AVPlayer` app with `TruexAdRenderer-iOS`:
+Two iOS reference apps, one in Swift (`swift-ios-app`) and one in Objective-C (`objc-ios-app`), demonstrating the
+same three complete ways to add Infillion interactive ads (TrueX and IDVx) to an `AVPlayer` app with
+`TruexAdRenderer-iOS`:
 
 | Example | Ad source | Ad break behavior |
 | --- | --- | --- |
@@ -10,8 +11,9 @@ An iOS reference app demonstrating three complete ways to add Infillion interact
 | **Google IMA SSAI** | Google DAI VOD request | Google DAI returns one stream with stitched ad breaks. |
 
 The examples intentionally duplicate their player, ad, and `TruexAdRenderer` code. Choose one example and read
-it from top to bottom without tracing a shared framework. The only shared integration file is the small
-Objective-C `TruexRendererFactory`, which Swift needs to pass `TruexAdOptions`.
+it from top to bottom without tracing a shared framework. Both apps have the same examples, flows, sample
+configuration, and unit tests; only the language differs. The Swift app's only shared integration file is the
+small Objective-C `TruexRendererFactory`, which Swift needs to pass `TruexAdOptions`.
 
 This repository replaces the earlier iOS reference apps:
 [truex-ios-mobile-reference-app](https://github.com/socialvibe/truex-ios-mobile-reference-app),
@@ -64,15 +66,18 @@ Every example follows the same flow:
 For platform guidance beyond these runnable examples, see the
 [official iOS integration documentation](https://socialvibe.github.io/infillion-ads-integration-docs/platforms/ios/).
 
-## Swift and `TruexAdOptions`
+## `TruexAdOptions` in Swift and Objective-C
 
-Swift can't import the `TruexAdOptions` C struct, so the app creates the renderer through
-[`TruexRendererFactory`](swift-ios-app/InfillionAdsExamples/Renderer/TruexRendererFactory.m), exposed with a
-bridging header:
+Both apps create the renderer with the same options:
 
 - `supportsUserCancelStream` is enabled, so leaving from the choice card fires `onUserCancelStream`.
 - `enableWebViewDebugging` is enabled in debug builds only.
 - `appId` defaults to the bundle identifier.
+
+Objective-C sets them on `DefaultOptions()` and passes them to `initWithAdParameters:options:delegate:` in each
+example. Swift can't import the `TruexAdOptions` C struct, so the Swift app creates the renderer through
+[`TruexRendererFactory`](swift-ios-app/InfillionAdsExamples/Renderer/TruexRendererFactory.m), exposed with a
+bridging header.
 
 ## Run the examples
 
@@ -84,9 +89,10 @@ bridging header:
 
 ### Xcode
 
-1. Open `swift-ios-app/InfillionAdsExamples.xcodeproj`.
-2. Select the `InfillionAdsExamples` scheme and an iPhone simulator.
-3. Run, then pick an example.
+1. Open `swift-ios-app/InfillionAdsExamples.xcodeproj` (Swift) or `objc-ios-app/InfillionAdsExamplesObjC.xcodeproj`
+   (Objective-C).
+2. Select the `InfillionAdsExamples` or `InfillionAdsExamplesObjC` scheme and an iPhone simulator.
+3. Run, then pick an example. The two apps have different bundle IDs, so both can be installed side by side.
 
 Each example plays content and shows its current state (content, ad request, linear ad, interactive ad,
 recovery, or error) in the upper-left status panel, and logs it with the `[InfillionAdsExamples]` prefix.
@@ -113,4 +119,4 @@ No credentials, signing keys, or production publisher configuration are included
 - [Plain / Manual CSAI](docs/manual-csai.md)
 - [Google IMA CSAI](docs/ima-csai.md)
 - [Google IMA SSAI](docs/ima-ssai.md)
-- [Proposed Objective-C app](docs/objc-app.md)
+- [Objective-C app](docs/objc-app.md)

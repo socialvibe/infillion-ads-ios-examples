@@ -5,7 +5,8 @@ Use this example when Google IMA requests and sequences client-side ads (VAST/VM
 ## Copy
 
 Copy the `ImaCsai` folder, `Resources/ima_csai_vmap.xml`, and `Renderer/TruexRendererFactory.{h,m}` with the
-bridging header. Add the `GoogleInteractiveMediaAds` Swift package.
+bridging header. Add the `GoogleInteractiveMediaAds` Swift package. In the [Objective-C app](objc-app.md), copy the
+`ImaCsai` folder and `Resources/ima_csai_vmap.xml`; it needs no factory.
 
 ## Flow
 
@@ -27,7 +28,7 @@ internals is needed.
 
 ## Renderer contract
 
-Same as [Plain / Manual CSAI](manual-csai.md#renderer-contract): `TruexRendererFactory` options, a strong
+Same as [Plain / Manual CSAI](manual-csai.md#renderer-contract): the renderer options, a strong
 renderer reference, hidden system UI while the renderer is active, `onPopupWebsite` in `SFSafariViewController`,
 and lifecycle pause/resume.
 
