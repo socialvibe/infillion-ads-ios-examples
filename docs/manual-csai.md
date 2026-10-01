@@ -48,7 +48,7 @@ Depending on the publisher's ad serving setup, Infillion tags deliver `adParamet
    <Creative id="placeholder_video">
      <Linear>
        <Duration>00:00:30</Duration>
-       <AdParameters><![CDATA[{"user_id":"...","vast_config_url":"..."}]]></AdParameters>
+       <AdParameters><![CDATA[{"user_id":"...", ...}]]></AdParameters>
        <MediaFiles>...</MediaFiles>
      </Linear>
    </Creative>
