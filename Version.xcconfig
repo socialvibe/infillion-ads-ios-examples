@@ -1,6 +1,6 @@
 // Version source of truth for every app in this repository. See CONTRIBUTING.md § Versioning.
-VERSION_CODE = 2
-VERSION_NAME = 1.0.1
+VERSION_CODE = 3
+VERSION_NAME = 1.0.2
 
 CURRENT_PROJECT_VERSION = $(VERSION_CODE)
 MARKETING_VERSION = $(VERSION_NAME)

@@ -9,9 +9,7 @@
 #if DEBUG
     options.enableWebViewDebugging = YES;
 #endif
-    return [[TruexAdRenderer alloc] initWithAdParameters:adParameters
-                                                 options:options
-                                                delegate:delegate];
+    return [[TruexAdRenderer alloc] initWithAdParameters:adParameters options:options delegate:delegate];
 }
 
 @end

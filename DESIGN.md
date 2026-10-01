@@ -1,7 +1,7 @@
 # Design
 
-The iOS app follows the Android examples' `DESIGN.md`, adapted from a ten-foot TV launcher to a touch phone and
-tablet UI.
+Both iOS apps (Swift and Objective-C) follow the Android examples' `DESIGN.md`, adapted from a ten-foot TV
+launcher to a touch phone and tablet UI.
 
 ## Color
 

@@ -6,7 +6,8 @@ Use this example when Google DAI stitches the ads into the content stream.
 
 Copy the `ImaSsai` folder and `Renderer/TruexRendererFactory.{h,m}` with the bridging header, then replace the
 [demo-only `adParameters`](#demo-only-adparameters) call and delete `ImaSsaiDemoAdParameters.swift`. Add the
-`GoogleInteractiveMediaAds` Swift package.
+`GoogleInteractiveMediaAds` Swift package. In the [Objective-C app](objc-app.md), copy the `ImaSsai` folder and
+delete `ImaSsaiDemoAdParameters.{h,m}` the same way; it needs no factory.
 
 ## Flow
 
@@ -26,18 +27,19 @@ DAI has no `discardAdBreak`, so every skip is a stream seek.
 
 For demo purposes only, `ImaSsaiDemoAdParameters.swift` takes the Infillion ads' `adParameters` from the iOS
 sample tags instead of from the ad. Do not use it in production: read `adParameters` from the ad with
-`imaSsaiAdParameters(traffickingParameters: ad.traffickingParameters)`, as noted in `handleAdStarted`.
+`imaSsaiAdParameters(traffickingParameters: ad.traffickingParameters)` (Objective-C:
+`ImaSsaiAdParameters(ad.traffickingParameters)`), as noted in `handleAdStarted`.
 
 ## Renderer contract
 
-Same as [Plain / Manual CSAI](manual-csai.md#renderer-contract): `TruexRendererFactory` options, a strong
+Same as [Plain / Manual CSAI](manual-csai.md#renderer-contract): the renderer options, a strong
 renderer reference, hidden system UI while the renderer is active, `onPopupWebsite` in `SFSafariViewController`,
 and lifecycle pause/resume.
 
 ## Replace in production
 
 - Supply the publisher's DAI content source and video IDs (or live asset key) and network code.
-- Read `adParameters` from `ad.traffickingParameters`, and remove `ImaSsaiDemoAdParameters.swift`.
+- Read `adParameters` from `ad.traffickingParameters`, and remove `ImaSsaiDemoAdParameters.swift` (`.h` / `.m`).
 - Reconcile stream time with content time (`streamManager.contentTime(forStreamTime:)`) for the player UI.
 - Snap seeks back to unplayed ad breaks, and test every seek direction and live-window behavior if applicable.
 - Add production stream-error retry and telemetry.
