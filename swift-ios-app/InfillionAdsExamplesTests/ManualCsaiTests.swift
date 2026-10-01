@@ -111,6 +111,13 @@ final class ManualCsaiTests: XCTestCase {
         )
     }
 
+    func testKeepsPlainJsonCompanionResourceUnchanged() throws {
+        let resource = #"  {"user_id":"plain","user_name":"first last"}  "#
+        let adParameters = try XCTUnwrap(ManualVastPayload.companionAdParameters(resource))
+        XCTAssertEqual(adParameters["user_id"] as? String, "plain")
+        XCTAssertEqual(adParameters["user_name"] as? String, "first last")
+    }
+
     func testReadsPlainJsonCompanionResource() {
         XCTAssertEqual(ManualVastPayload.companionAdParameters(#"{"user_id":"plain"}"#)?["user_id"] as? String, "plain")
     }

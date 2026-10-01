@@ -34,13 +34,17 @@ enum ManualVastPayload {
         return nil
     }
 
-    /// Decodes a `data:application/json;base64,...` URL. A resource without a comma is read as plain JSON.
+    /// Decodes a `data:application/json;base64,...` URL. Any other resource is read as plain JSON.
     static func companionAdParameters(_ resource: String) -> [String: Any]? {
-        let compact = resource.filter { !$0.isWhitespace }
-        guard let comma = compact.firstIndex(of: ",") else {
-            return jsonObject(compact)
+        let trimmed = resource.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard trimmed.lowercased().hasPrefix("data:") else {
+            return jsonObject(trimmed)
         }
-        guard let decoded = Data(base64Encoded: String(compact[compact.index(after: comma)...])) else {
+        // The ad server wraps the base64 payload across lines, so whitespace is removed before decoding.
+        let compact = trimmed.filter { !$0.isWhitespace }
+        guard let comma = compact.firstIndex(of: ","),
+            let decoded = Data(base64Encoded: String(compact[compact.index(after: comma)...]))
+        else {
             return nil
         }
         return (try? JSONSerialization.jsonObject(with: decoded)) as? [String: Any]

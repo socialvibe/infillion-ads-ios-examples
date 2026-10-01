@@ -31,6 +31,7 @@ final class ImaSsaiViewController: UIViewController {
     private var currentInteractiveType = ImaSsaiAdType.linear
     private var truexAdCreditReceived = false
     private var placeholderEndTime = 0.0
+    private var adParametersTask: Task<Void, Never>?
 
     override var prefersStatusBarHidden: Bool {
         truexAdRenderer != nil
@@ -87,6 +88,7 @@ final class ImaSsaiViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if isMovingFromParent {
+            adParametersTask?.cancel()
             disposeRenderer()
             if let timeObserver {
                 player.removeTimeObserver(timeObserver)
@@ -147,9 +149,14 @@ final class ImaSsaiViewController: UIViewController {
         placeholderEndTime = imaSsaiPlaceholderEndTime(adStartStreamTime: currentStreamTime, adDuration: ad.duration)
         statusView.text = "Ad \(position): requesting \(ad.adSystem) adParameters"
 
-        Task { @MainActor in
+        adParametersTask = Task { @MainActor in
             // A production app reads them from the ad: imaSsaiAdParameters(traffickingParameters: ad.traffickingParameters)
-            guard let adParameters = await ImaSsaiDemoAdParameters.load(for: type) else {
+            let adParameters = await ImaSsaiDemoAdParameters.load(for: type)
+            // The screen was closed while the adParameters were loading.
+            guard !Task.isCancelled else {
+                return
+            }
+            guard let adParameters else {
                 // No usable adParameters: don't start the renderer, continue the pod.
                 statusView.text = "Ad \(position): \(ad.adSystem) unavailable, continuing the pod"
                 finishInteractiveAd(skipAdBreak: false)
@@ -158,9 +165,15 @@ final class ImaSsaiViewController: UIViewController {
             statusView.text = "Ad \(position): interactive \(ad.adSystem)"
             currentInteractiveType = type
             truexAdCreditReceived = false
-            truexAdRenderer = TruexRendererFactory.renderer(withAdParameters: adParameters, delegate: self)
+            guard let renderer = TruexRendererFactory.renderer(withAdParameters: adParameters, delegate: self) else {
+                // No renderer means no delegate events: continue the pod.
+                statusView.text = "Ad \(position): renderer unavailable, continuing the pod"
+                finishInteractiveAd(skipAdBreak: false)
+                return
+            }
+            truexAdRenderer = renderer
             setRendererActive(true)
-            truexAdRenderer?.start(view)
+            renderer.start(view)
         }
     }
 

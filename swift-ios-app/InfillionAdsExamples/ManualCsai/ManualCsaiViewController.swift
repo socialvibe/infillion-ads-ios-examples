@@ -23,6 +23,7 @@ final class ManualCsaiViewController: UIViewController {
     private var adBreakStarted = false
     private var contentResumeTime = CMTime.zero
     private var adParametersByIndex: [Int: [String: Any]] = [:]
+    private var adParametersTask: Task<Void, Never>?
     private var currentAdIndex = 0
 
     // Keep a strong reference: the renderer holds its delegate weakly and is released otherwise.
@@ -75,6 +76,7 @@ final class ManualCsaiViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if isMovingFromParent {
+            adParametersTask?.cancel()
             disposeRenderer()
             player.pause()
             if let timeObserver {
@@ -117,8 +119,11 @@ final class ManualCsaiViewController: UIViewController {
         statusView.text = "Ad break \(adBreak.breakId): requesting Infillion ads"
 
         // Fetch the tags when the break starts, so every break gets a fresh ad session.
-        Task { @MainActor in
+        adParametersTask = Task { @MainActor in
             for (index, ad) in adBreak.ads.enumerated() {
+                guard !Task.isCancelled else {
+                    return
+                }
                 guard let url = ad.resolvedVastUrl(userId: Self.userId) else {
                     continue
                 }
@@ -127,6 +132,10 @@ final class ManualCsaiViewController: UIViewController {
                 } catch {
                     exampleLog("No adParameters for \(ad.id): \(error.localizedDescription)")
                 }
+            }
+            // The screen was closed while the tags were loading.
+            guard !Task.isCancelled else {
+                return
             }
             playAd(at: 0)
         }
@@ -193,9 +202,15 @@ final class ManualCsaiViewController: UIViewController {
         statusView.text = "Ad \(position): interactive \(ad.adSystem)"
         currentInteractiveType = ad.type
         truexAdCreditReceived = false
-        truexAdRenderer = TruexRendererFactory.renderer(withAdParameters: adParameters, delegate: self)
+        guard let renderer = TruexRendererFactory.renderer(withAdParameters: adParameters, delegate: self) else {
+            // No renderer means no delegate events: continue the pod.
+            statusView.text = "Ad \(position): renderer unavailable, continuing the pod"
+            playAd(at: currentAdIndex + 1)
+            return
+        }
+        truexAdRenderer = renderer
         setRendererActive(true)
-        truexAdRenderer?.start(view)
+        renderer.start(view)
     }
 
     private func finishInteractiveAd(skipRemainingAds: Bool) {

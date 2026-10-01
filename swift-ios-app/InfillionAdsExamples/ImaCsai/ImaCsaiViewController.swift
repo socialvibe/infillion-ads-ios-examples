@@ -142,9 +142,15 @@ final class ImaCsaiViewController: UIViewController {
         statusView.text = "Ad \(position): interactive \(ad.adSystem)"
         currentInteractiveType = type
         truexAdCreditReceived = false
-        truexAdRenderer = TruexRendererFactory.renderer(withAdParameters: adParameters, delegate: self)
+        guard let renderer = TruexRendererFactory.renderer(withAdParameters: adParameters, delegate: self) else {
+            // No renderer means no delegate events: continue the pod.
+            statusView.text = "Ad \(position): renderer unavailable, continuing the pod"
+            finishInteractiveAd(skipRemainingAds: false)
+            return
+        }
+        truexAdRenderer = renderer
         setRendererActive(true)
-        truexAdRenderer?.start(view)
+        renderer.start(view)
     }
 
     private func skipPlaceholderAd() {
