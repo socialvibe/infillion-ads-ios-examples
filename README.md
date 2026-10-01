@@ -1,4 +1,114 @@
 # Infillion Ads - iOS Examples
 
-iOS reference apps that show how to integrate Infillion interactive ads (TrueX and IDVx) with
-`TruexAdRenderer-iOS`. Build, test, and release instructions live in [CONTRIBUTING.md](CONTRIBUTING.md).
+An iOS reference app demonstrating three complete ways to add Infillion interactive ads (TrueX and IDVx) to an
+`AVPlayer` app with `TruexAdRenderer-iOS`:
+
+| Example | Ad source | Ad break behavior |
+| --- | --- | --- |
+| **Plain / Manual CSAI** | Bundled JSON fixture | The host app schedules and plays the ad pod. |
+| **Google IMA CSAI** | Bundled VMAP | Google IMA requests and sequences client-side ads. |
+| **Google IMA SSAI** | Google DAI VOD request | Google DAI returns one stream with stitched ad breaks. |
+
+The examples intentionally duplicate their player, ad, and `TruexAdRenderer` code. Choose one example and read
+it from top to bottom without tracing a shared framework. The only shared integration file is the small
+Objective-C `TruexRendererFactory`, which Swift needs to pass `TruexAdOptions`.
+
+This repository replaces the earlier iOS reference apps:
+[truex-ios-mobile-reference-app](https://github.com/socialvibe/truex-ios-mobile-reference-app),
+[truex-ios-google-ima-csai-ref-app](https://github.com/socialvibe/truex-ios-google-ima-csai-ref-app), and
+[truex-ios-reference-app](https://github.com/socialvibe/truex-ios-reference-app).
+
+## TrueX and IDVx
+
+Both formats use the same renderer and are started the same way, but they differ in how the viewer enters the
+experience and what happens afterward:
+
+| | TrueX | IDVx |
+| --- | --- | --- |
+| Entry | Opt-in from a choice card | Starts directly, no choice card |
+| Pod position | Interactive only as the **first** ad in a pod; elsewhere it plays as a normal linear ad | Any position |
+| Reward | `onAdFreePod`: the viewer earned the rest of the pod | None, `onAdFreePod` is never called |
+| After `onAdCompleted` | Skip the rest of the pod if `onAdFreePod` was called, otherwise continue it | Always continue the pod |
+
+If a TrueX viewer doesn't opt in, or an interactive ad is unavailable, the publisher's normal ad flow
+continues. See [What are Infillion Ads?](https://socialvibe.github.io/infillion-ads-integration-docs/overview/what-are-infillion-ads)
+for broader product context.
+
+## Integration flow
+
+Publishers:
+
+- Get TrueX and IDVx tags (VAST URLs) from their Infillion contact. Placements are per platform, so iOS uses its
+  own tags.
+- Target those tags in the publisher ad server, CSAI, or SSAI stack.
+- Confirm the tag reaches the app: ad system `trueX` / `IDVx` and the `adParameters` JSON.
+
+Every example follows the same flow:
+
+1. Add `TruexAdRenderer-iOS` and the player or ad SDK dependencies.
+2. Detect an Infillion ad from its ad system (`trueX` or `IDVx`, compared case-insensitively).
+3. Read `adParameters` from the ad: the JSON in `<Linear><AdParameters>`, which Google IMA exposes as
+   `traffickingParameters`. If it is missing or invalid, don't start the renderer and continue the pod.
+4. Pause playback and move past the placeholder media.
+5. Create the renderer with `initWithAdParameters:options:delegate:` and call `start(_:)` with a view above the
+   player. Keep a strong reference to it.
+6. For TrueX, treat `onAdFreePod` as the reward; act on it in `onAdCompleted`.
+7. On `onAdCompleted`, skip the rest of the pod if the reward was earned, otherwise continue the pod. On
+   `onAdError` or `onNoAdsAvailable`, continue the pod. On `onUserCancelStream`, leave the player.
+8. On `onPopupWebsite`, pause the renderer, show the page in `SFSafariViewController`, and resume afterwards.
+9. Pause and resume the renderer with the app lifecycle, and `stop()` it after a terminal event.
+
+`vastConfigUrl` is not used: every example initializes the renderer from `adParameters`.
+
+For platform guidance beyond these runnable examples, see the
+[official iOS integration documentation](https://socialvibe.github.io/infillion-ads-integration-docs/platforms/ios/).
+
+## Swift and `TruexAdOptions`
+
+Swift can't import the `TruexAdOptions` C struct, so the app creates the renderer through
+[`TruexRendererFactory`](swift-ios-app/InfillionAdsExamples/Renderer/TruexRendererFactory.m), exposed with a
+bridging header:
+
+- `supportsUserCancelStream` is enabled, so leaving from the choice card fires `onUserCancelStream`.
+- `enableWebViewDebugging` is enabled in debug builds only.
+- `appId` defaults to the bundle identifier.
+
+## Run the examples
+
+### Requirements
+
+- Xcode 16 or newer
+- An iOS Simulator runtime (or a device) running iOS 15.6 or newer
+- Network access to the sample media, Google IMA, and the TrueX renderer Swift package
+
+### Xcode
+
+1. Open `swift-ios-app/InfillionAdsExamples.xcodeproj`.
+2. Select the `InfillionAdsExamples` scheme and an iPhone simulator.
+3. Run, then pick an example.
+
+Each example plays content and shows its current state (content, ad request, linear ad, interactive ad,
+recovery, or error) in the upper-left status panel, and logs it with the `[InfillionAdsExamples]` prefix.
+
+Command-line build and test commands are in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Sample configuration
+
+Sample URLs and DAI identifiers are deliberately visible near the top of each example. Replace them with
+publisher-owned configuration in a real integration.
+
+- iOS TrueX tag `get.truex.com/22c36d3926383ba62994809a60b4649e3ced1070/vast/generic` and iOS IDVx tag
+  `get.truex.com/132f66121635ac312e42f1eb018081d50d10fe2a/vast/idvx/generic`.
+- Test IP parameter (`&ip=158.106.195.210`): Infillion's NYC office IP address is included on the sample tags so
+  ads are filled during development and on CI. The TrueX ad server currently serves ads in the US and Canada
+  only. Replace it with publisher-managed geo/IP handling in production.
+- Google DAI sample content source ID `2496857` and video ID `truex-content22-4k`.
+
+No credentials, signing keys, or production publisher configuration are included.
+
+## Read one integration
+
+- [Plain / Manual CSAI](docs/manual-csai.md)
+- [Google IMA CSAI](docs/ima-csai.md)
+- [Google IMA SSAI](docs/ima-ssai.md)
+- [Proposed Objective-C app](docs/objc-app.md)
