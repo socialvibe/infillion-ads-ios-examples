@@ -2,12 +2,6 @@
 
 Use this example when Google IMA requests and sequences client-side ads (VAST/VMAP) for an `AVPlayer` app.
 
-## Copy
-
-Copy the `ImaCsai` folder, `Resources/ima_csai_vmap.xml`, and `Renderer/TruexRendererFactory.{h,m}` with the
-bridging header. Add the `GoogleInteractiveMediaAds` Swift package. In the [Objective-C app](objc-app.md), copy the
-`ImaCsai` folder and `Resources/ima_csai_vmap.xml`; it needs no factory.
-
 ## Flow
 
 1. `ImaCsaiViewController` requests ads with the bundled VMAP once the view is in the window (IMA requires the ad
@@ -17,14 +11,19 @@ bridging header. Add the `GoogleInteractiveMediaAds` Swift package. In the [Obje
    the app.
 3. On `STARTED`, the ad type comes from `ad.adSystem` and the position from `ad.adPodInfo.adPosition`.
 4. For TrueX at position 1 or IDVx at any position, the app pauses IMA, seeks the player to the end of the
-   placeholder, and starts `TruexAdRenderer` with `ad.traffickingParameters`. Without usable
-   `traffickingParameters` it resumes IMA, which continues the pod.
+   placeholder, and starts `TruexAdRenderer` with the ad's `adParameters`: the `truex` companion in
+   `ad.companionAds` first, then `ad.traffickingParameters` (see
+   [VAST tag formats and ad parameters](../README.md#vast-tag-formats-and-ad-parameters)). Without usable
+   `adParameters` it resumes IMA, which continues the pod.
 5. On `onAdCompleted` with TrueX credit, `adsManager.discardAdBreak()` skips the rest of the break. Otherwise, and
    on `onAdError` or `onNoAdsAvailable`, `adsManager.resume()` finishes the placeholder and continues the pod.
 6. IMA requests content resume after the break and the app resumes content.
 
 Because the placeholder plays in the app's `AVPlayer`, moving past it is a plain `AVPlayer` seek; no access to IMA
 internals is needed.
+
+IMA leaves `ad.companionAds` empty for client-side ads, so with IMA CSAI the `adParameters` always come from
+`ad.traffickingParameters`: use the generic tags (`/vast/generic`, `/vast/idvx/generic`).
 
 ## Renderer contract
 

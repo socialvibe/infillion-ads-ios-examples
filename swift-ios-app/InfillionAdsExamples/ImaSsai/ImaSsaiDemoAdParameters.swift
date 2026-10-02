@@ -1,7 +1,7 @@
 import Foundation
 
 // For demo purposes only. Do not use in production: read `adParameters` from the ad
-// (`traffickingParameters`, see `imaSsaiAdParameters(traffickingParameters:)`).
+// (`companionAds` and `traffickingParameters`, see `imaSsaiAdParameters(companions:traffickingParameters:)`).
 //
 // This sample takes the Infillion ads' `adParameters` from the iOS sample tags instead of from the DAI stream.
 enum ImaSsaiDemoAdParameters {
@@ -30,7 +30,7 @@ enum ImaSsaiDemoAdParameters {
         let delegate = AdParametersParser()
         parser.delegate = delegate
         parser.parse()
-        return imaSsaiAdParameters(traffickingParameters: delegate.adParameters)
+        return imaSsaiAdParameters(companions: [], traffickingParameters: delegate.adParameters)
     }
 }
 

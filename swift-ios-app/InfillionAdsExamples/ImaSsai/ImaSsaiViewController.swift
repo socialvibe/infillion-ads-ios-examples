@@ -150,7 +150,11 @@ final class ImaSsaiViewController: UIViewController {
         statusView.text = "Ad \(position): requesting \(ad.adSystem) adParameters"
 
         adParametersTask = Task { @MainActor in
-            // A production app reads them from the ad: imaSsaiAdParameters(traffickingParameters: ad.traffickingParameters)
+            // A production app reads them from the ad:
+            // imaSsaiAdParameters(
+            //     companions: ad.companionAds.map { ($0.apiFramework, $0.resourceValue) },
+            //     traffickingParameters: ad.traffickingParameters
+            // )
             let adParameters = await ImaSsaiDemoAdParameters.load(for: type)
             // The screen was closed while the adParameters were loading.
             guard !Task.isCancelled else {

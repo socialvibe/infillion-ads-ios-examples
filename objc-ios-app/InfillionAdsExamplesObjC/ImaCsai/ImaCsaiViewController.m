@@ -152,7 +152,7 @@ static NSString *const kVmapResource = @"ima_csai_vmap";
     [_adsManager pause];
     [self skipPlaceholderAd];
 
-    NSDictionary *adParameters = ImaCsaiAdParameters(ad.traffickingParameters);
+    NSDictionary *adParameters = ImaCsaiAdParameters(ad.companionAds, ad.traffickingParameters);
     if (!adParameters) {
         // No usable adParameters: don't start the renderer, continue the pod.
         _statusView.text =

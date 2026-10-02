@@ -15,10 +15,8 @@ it from top to bottom without tracing a shared framework. Both apps have the sam
 configuration, and unit tests; only the language differs. The Swift app's only shared integration file is the
 small Objective-C `TruexRendererFactory`, which Swift needs to pass `TruexAdOptions`.
 
-This repository replaces the earlier iOS reference apps:
-[truex-ios-mobile-reference-app](https://github.com/socialvibe/truex-ios-mobile-reference-app),
-[truex-ios-google-ima-csai-ref-app](https://github.com/socialvibe/truex-ios-google-ima-csai-ref-app), and
-[truex-ios-reference-app](https://github.com/socialvibe/truex-ios-reference-app).
+These apps are runnable demos. For the full iOS integration guide, see the
+[official iOS integration documentation](https://socialvibe.github.io/infillion-ads-integration-docs/platforms/ios/).
 
 ## TrueX and IDVx
 
@@ -49,9 +47,9 @@ Every example follows the same flow:
 
 1. Add `TruexAdRenderer-iOS` and the player or ad SDK dependencies.
 2. Detect an Infillion ad from its ad system (`trueX` or `IDVx`, compared case-insensitively).
-3. Read `adParameters` from the ad: the JSON in `<Linear><AdParameters>` (generic tag), which Google IMA exposes as
-   `traffickingParameters`, or a base64 JSON `truex` companion (companion tag, handled in Manual CSAI). If it is
-   missing or invalid, don't start the renderer and continue the pod.
+3. Read `adParameters` from the ad: the `truex` companion first, then `<AdParameters>` (see
+   [VAST tag formats and ad parameters](#vast-tag-formats-and-ad-parameters)). If neither holds a JSON object, don't
+   start the renderer and continue the pod.
 4. Pause playback and move past the placeholder media.
 5. Create the renderer with `initWithAdParameters:options:delegate:` and call `start(_:)` with a view above the
    player. Keep a strong reference to it.
@@ -61,10 +59,48 @@ Every example follows the same flow:
 8. On `onPopupWebsite`, pause the renderer, show the page in `SFSafariViewController`, and resume afterwards.
 9. Pause and resume the renderer with the app lifecycle, and `stop()` it after a terminal event.
 
-`vastConfigUrl` is not used: every example initializes the renderer from `adParameters`.
+## VAST tag formats and ad parameters
 
-For platform guidance beyond these runnable examples, see the
-[official iOS integration documentation](https://socialvibe.github.io/infillion-ads-integration-docs/platforms/ios/).
+Depending on the publisher's ad serving setup, Infillion tags deliver `adParameters` in one of two formats:
+
+1. **Companion tag** (TrueX `/vast/companion`, IDVx `/vast/idvx/companion`): a base64 JSON `data:` URL inside
+   `<Companion apiFramework="truex"><StaticResource creativeType="application/json">`:
+
+   ```xml
+   <Creative id="super_tag">
+     <CompanionAds required="all">
+       <Companion id="super_tag" width="960" height="540" apiFramework="truex">
+         <StaticResource creativeType="application/json">
+           <![CDATA[data:application/json;base64,eyJ1c2VyX2lkIjoi...]]>
+         </StaticResource>
+       </Companion>
+     </CompanionAds>
+   </Creative>
+   ```
+
+2. **Generic tag** (TrueX `/vast/generic`, IDVx `/vast/idvx/generic`): the JSON directly in `<Linear><AdParameters>`:
+
+   ```xml
+   <Creative id="placeholder_video">
+     <Linear>
+       <Duration>00:00:30</Duration>
+       <AdParameters><![CDATA[{"user_id":"...", ...}]]></AdParameters>
+       <MediaFiles>...</MediaFiles>
+     </Linear>
+   </Creative>
+   ```
+
+Every example resolves `adParameters` the same way: the `truex` companion first, then `<AdParameters>`. Only the
+place where the ad framework exposes them differs:
+
+| Example | `<StaticResource>` of the `truex` companion | `<AdParameters>` |
+| --- | --- | --- |
+| Plain / Manual CSAI | parsed from the fetched VAST | parsed from the fetched VAST |
+| Google IMA CSAI | `ad.companionAds` (`apiFramework`, `resourceValue`) | `ad.traffickingParameters` |
+| Google IMA SSAI | `ad.companionAds` (`apiFramework`, `resourceValue`) | `ad.traffickingParameters` |
+
+Google IMA fills `ad.companionAds` only for DAI streams; it is empty for client-side ads. With IMA CSAI, use the
+generic tags.
 
 ## `TruexAdOptions` in Swift and Objective-C
 
@@ -119,4 +155,3 @@ No credentials, signing keys, or production publisher configuration are included
 - [Plain / Manual CSAI](docs/manual-csai.md)
 - [Google IMA CSAI](docs/ima-csai.md)
 - [Google IMA SSAI](docs/ima-ssai.md)
-- [Objective-C app](docs/objc-app.md)

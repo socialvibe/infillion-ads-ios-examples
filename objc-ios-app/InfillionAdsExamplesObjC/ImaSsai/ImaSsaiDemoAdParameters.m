@@ -69,7 +69,7 @@ static NSString *const kIdvxTag =
                                           NSXMLParser *parser = [[NSXMLParser alloc] initWithData:data];
                                           parser.delegate = delegate;
                                           [parser parse];
-                                          adParameters = ImaSsaiAdParameters(delegate.adParameters);
+                                          adParameters = ImaSsaiAdParameters(nil, delegate.adParameters);
                                       }
                                       dispatch_async(dispatch_get_main_queue(), ^{
                                           completion(adParameters);

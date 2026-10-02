@@ -36,12 +36,39 @@ func shouldSkipImaSsaiAdBreak(_ type: ImaSsaiAdType, earnedCredit: Bool) -> Bool
     type == .truex && earnedCredit
 }
 
-/// IMA exposes the VAST `<AdParameters>` JSON as `traffickingParameters`.
-/// Returns nil when it is missing or not a JSON object.
-func imaSsaiAdParameters(traffickingParameters: String?) -> [String: Any]? {
-    guard let json = traffickingParameters?.trimmingCharacters(in: .whitespacesAndNewlines).data(using: .utf8),
-        !json.isEmpty
+/// Infillion tags deliver `adParameters` as a `truex` companion (companion tag) or as `<AdParameters>` (generic tag).
+/// IMA exposes them as `ad.companionAds` and `ad.traffickingParameters`; the companion is checked first.
+/// Returns nil when neither holds a JSON object.
+func imaSsaiAdParameters(
+    companions: [(apiFramework: String?, resourceValue: String?)],
+    traffickingParameters: String?
+) -> [String: Any]? {
+    for companion in companions where companion.apiFramework?.lowercased() == "truex" {
+        if let resource = companion.resourceValue, let adParameters = imaSsaiCompanionAdParameters(resource) {
+            return adParameters
+        }
+    }
+    return imaSsaiJsonObject(traffickingParameters)
+}
+
+/// Decodes a `data:application/json;base64,...` URL. Any other resource is read as plain JSON.
+func imaSsaiCompanionAdParameters(_ resource: String) -> [String: Any]? {
+    let trimmed = resource.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard trimmed.lowercased().hasPrefix("data:") else {
+        return imaSsaiJsonObject(trimmed)
+    }
+    // The ad server wraps the base64 payload across lines, so whitespace is removed before decoding.
+    let compact = trimmed.filter { !$0.isWhitespace }
+    guard let comma = compact.firstIndex(of: ","),
+        let decoded = Data(base64Encoded: String(compact[compact.index(after: comma)...]))
     else {
+        return nil
+    }
+    return (try? JSONSerialization.jsonObject(with: decoded)) as? [String: Any]
+}
+
+private func imaSsaiJsonObject(_ text: String?) -> [String: Any]? {
+    guard let json = text?.trimmingCharacters(in: .whitespacesAndNewlines).data(using: .utf8), !json.isEmpty else {
         return nil
     }
     return (try? JSONSerialization.jsonObject(with: json)) as? [String: Any]

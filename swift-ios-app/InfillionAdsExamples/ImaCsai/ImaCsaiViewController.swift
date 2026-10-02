@@ -7,7 +7,7 @@ import UIKit
 /// Google IMA CSAI: IMA requests and sequences client-side ads.
 ///
 /// When IMA starts a TrueX or IDVx placeholder ad, the app pauses IMA, moves the placeholder to its end, and runs
-/// `TruexAdRenderer` with the ad's `traffickingParameters`. TrueX credit discards the rest of the ad break.
+/// `TruexAdRenderer` with the ad's `adParameters`. TrueX credit discards the rest of the ad break.
 final class ImaCsaiViewController: UIViewController {
     // Sample configuration. Replace with publisher-owned content and ad tags.
     private static let contentUrl = URL(string: "https://ctv.truex.com/assets/reference-app-stream-no-ads-720p.mp4")!
@@ -133,7 +133,12 @@ final class ImaCsaiViewController: UIViewController {
         adsManager?.pause()
         skipPlaceholderAd()
 
-        guard let adParameters = imaCsaiAdParameters(traffickingParameters: ad.traffickingParameters) else {
+        guard
+            let adParameters = imaCsaiAdParameters(
+                companions: ad.companionAds.map { ($0.apiFramework, $0.resourceValue) },
+                traffickingParameters: ad.traffickingParameters
+            )
+        else {
             // No usable adParameters: don't start the renderer, continue the pod.
             statusView.text = "Ad \(position): \(ad.adSystem) unavailable, continuing the pod"
             adsManager?.resume()

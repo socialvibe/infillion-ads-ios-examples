@@ -18,8 +18,15 @@ FOUNDATION_EXTERN BOOL CanPlayImaCsaiInteractive(ImaCsaiAdType type, NSInteger a
 /// Only a TrueX ad that earned credit (`onAdFreePod`) skips the rest of the pod.
 FOUNDATION_EXTERN BOOL ShouldDiscardImaCsaiAdBreak(ImaCsaiAdType type, BOOL earnedCredit);
 
-/// IMA exposes the VAST `<AdParameters>` JSON as `traffickingParameters`.
-/// Returns nil when it is missing or not a JSON object.
-FOUNDATION_EXTERN NSDictionary *_Nullable ImaCsaiAdParameters(NSString *_Nullable traffickingParameters);
+@class IMACompanionAd;
+
+/// Infillion tags deliver `adParameters` as a `truex` companion (companion tag) or as `<AdParameters>` (generic tag).
+/// IMA exposes them as `ad.companionAds` and `ad.traffickingParameters`; the companion is checked first.
+/// Returns nil when neither holds a JSON object.
+FOUNDATION_EXTERN NSDictionary *_Nullable ImaCsaiAdParameters(NSArray<IMACompanionAd *> *_Nullable companionAds,
+                                                              NSString *_Nullable traffickingParameters);
+
+/// Decodes a `data:application/json;base64,...` URL. Any other resource is read as plain JSON.
+FOUNDATION_EXTERN NSDictionary *_Nullable ImaCsaiCompanionAdParameters(NSString *resource);
 
 NS_ASSUME_NONNULL_END
