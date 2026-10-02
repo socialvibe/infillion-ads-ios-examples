@@ -5,7 +5,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 // For demo purposes only. Do not use in production: read `adParameters` from the ad
-// (`traffickingParameters`, see `ImaSsaiAdParameters`).
+// (`companionAds` and `traffickingParameters`, see `ImaSsaiAdParameters`).
 //
 // This sample takes the Infillion ads' `adParameters` from the iOS sample tags instead of from the DAI stream.
 @interface ImaSsaiDemoAdParameters : NSObject

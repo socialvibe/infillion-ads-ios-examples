@@ -26,6 +26,7 @@ final class ImaCsaiTests: XCTestCase {
     func testParsesTraffickingParameters() throws {
         let adParameters = try XCTUnwrap(
             imaCsaiAdParameters(
+                companions: [],
                 traffickingParameters: #" {"user_id":"u1","vast_config_url":"get.truex.com/abc/vast/config"} "#
             )
         )
@@ -33,10 +34,10 @@ final class ImaCsaiTests: XCTestCase {
     }
 
     func testRejectsMissingOrInvalidTraffickingParameters() {
-        XCTAssertNil(imaCsaiAdParameters(traffickingParameters: nil))
-        XCTAssertNil(imaCsaiAdParameters(traffickingParameters: ""))
-        XCTAssertNil(imaCsaiAdParameters(traffickingParameters: "not json"))
-        XCTAssertNil(imaCsaiAdParameters(traffickingParameters: "[1, 2]"))
+        XCTAssertNil(imaCsaiAdParameters(companions: [], traffickingParameters: nil))
+        XCTAssertNil(imaCsaiAdParameters(companions: [], traffickingParameters: ""))
+        XCTAssertNil(imaCsaiAdParameters(companions: [], traffickingParameters: "not json"))
+        XCTAssertNil(imaCsaiAdParameters(companions: [], traffickingParameters: "[1, 2]"))
     }
 
     func testBundledVmapUsesIosPlacements() throws {
@@ -44,5 +45,40 @@ final class ImaCsaiTests: XCTestCase {
         let vmap = try String(contentsOf: url, encoding: .utf8)
         XCTAssertTrue(vmap.contains("22c36d3926383ba62994809a60b4649e3ced1070/vast/generic"))
         XCTAssertTrue(vmap.contains("132f66121635ac312e42f1eb018081d50d10fe2a/vast/idvx/generic"))
+    }
+
+    // `{"user_id":"u1"}` as a base64 `data:` URL, wrapped like the ad server does.
+    private static let companionDataUrl = """
+        data:application/json;base64,eyJ1c2Vy
+        X2lkIjoidTEifQ==
+        """
+
+    func testReadsAdParametersFromTruexCompanion() {
+        let adParameters = imaCsaiAdParameters(
+            companions: [("truex", Self.companionDataUrl)],
+            traffickingParameters: ""
+        )
+        XCTAssertEqual(adParameters?["user_id"] as? String, "u1")
+    }
+
+    func testCompanionWinsOverTraffickingParameters() {
+        let adParameters = imaCsaiAdParameters(
+            companions: [("TrueX", Self.companionDataUrl)],
+            traffickingParameters: #"{"user_id":"trafficking"}"#
+        )
+        XCTAssertEqual(adParameters?["user_id"] as? String, "u1")
+    }
+
+    func testFallsBackToTraffickingParameters() {
+        let adParameters = imaCsaiAdParameters(
+            companions: [("VPAID", Self.companionDataUrl), ("truex", "data:application/json;base64,!!!")],
+            traffickingParameters: #"{"user_id":"trafficking"}"#
+        )
+        XCTAssertEqual(adParameters?["user_id"] as? String, "trafficking")
+    }
+
+    func testKeepsPlainJsonCompanionResourceUnchanged() {
+        let adParameters = imaCsaiCompanionAdParameters(#"  {"user_id":"plain","user_name":"first last"}  "#)
+        XCTAssertEqual(adParameters?["user_name"] as? String, "first last")
     }
 }

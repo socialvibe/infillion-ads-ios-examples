@@ -174,7 +174,7 @@ static NSString *const kVideoId = @"truex-content22-4k";
     _placeholderEndTime = ImaSsaiPlaceholderEndTime(self.currentStreamTime, ad.duration);
     _statusView.text = [NSString stringWithFormat:@"Ad %ld: requesting %@ adParameters", (long)position, ad.adSystem];
 
-    // A production app reads them from the ad: ImaSsaiAdParameters(ad.traffickingParameters)
+    // A production app reads them from the ad: ImaSsaiAdParameters(ad.companionAds, ad.traffickingParameters)
     _adParametersTask = [ImaSsaiDemoAdParameters loadForType:type
                                                   completion:^(NSDictionary *adParameters) {
                                                       // The screen was closed while the adParameters were loading.
