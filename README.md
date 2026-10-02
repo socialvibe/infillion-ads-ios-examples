@@ -3,6 +3,10 @@
 > Contributing to this repository? Build, test, code style, and release rules are in
 > [CONTRIBUTING.md](CONTRIBUTING.md). The rest of this README is for publishers using the examples.
 
+> [!IMPORTANT]
+> These apps are runnable demos. For the full iOS integration guide, see the
+> [official iOS integration documentation](https://socialvibe.github.io/infillion-ads-integration-docs/platforms/ios/).
+
 Two iOS reference apps, one in Swift (`swift-ios-app`) and one in Objective-C (`objc-ios-app`), demonstrating the
 same three complete ways to add Infillion interactive ads (TrueX and IDVx) to an `AVPlayer` app with
 `TruexAdRenderer-iOS`:
@@ -17,9 +21,6 @@ The examples intentionally duplicate their player, ad, and `TruexAdRenderer` cod
 it from top to bottom without tracing a shared framework. Both apps have the same examples, flows, sample
 configuration, and unit tests; only the language differs. The Swift app's only shared integration file is the
 small Objective-C `TruexRendererFactory`, which Swift needs to pass `TruexAdOptions`.
-
-These apps are runnable demos. For the full iOS integration guide, see the
-[official iOS integration documentation](https://socialvibe.github.io/infillion-ads-integration-docs/platforms/ios/).
 
 ## TrueX and IDVx
 
