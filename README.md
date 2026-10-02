@@ -155,4 +155,3 @@ No credentials, signing keys, or production publisher configuration are included
 - [Plain / Manual CSAI](docs/manual-csai.md)
 - [Google IMA CSAI](docs/ima-csai.md)
 - [Google IMA SSAI](docs/ima-ssai.md)
-- [Objective-C app](docs/objc-app.md)
