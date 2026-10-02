@@ -1,5 +1,8 @@
 # Infillion Ads - iOS Examples
 
+> Contributing to this repository? Build, test, code style, and release rules are in
+> [CONTRIBUTING.md](CONTRIBUTING.md). The rest of this README is for publishers using the examples.
+
 Two iOS reference apps, one in Swift (`swift-ios-app`) and one in Objective-C (`objc-ios-app`), demonstrating the
 same three complete ways to add Infillion interactive ads (TrueX and IDVx) to an `AVPlayer` app with
 `TruexAdRenderer-iOS`:
@@ -132,8 +135,6 @@ bridging header.
 
 Each example plays content and shows its current state (content, ad request, linear ad, interactive ad,
 recovery, or error) in the upper-left status panel, and logs it with the `[InfillionAdsExamples]` prefix.
-
-Command-line build and test commands are in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Sample configuration
 
